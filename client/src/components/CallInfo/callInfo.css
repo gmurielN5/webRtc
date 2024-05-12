@@ -1,0 +1,14 @@
+.call-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #cacaca;
+  background-color: #222;
+  padding: 20px;
+  text-align: center;
+}
+
+.call-info h1 {
+  color: white;
+}
