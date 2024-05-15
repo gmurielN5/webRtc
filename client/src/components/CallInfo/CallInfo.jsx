@@ -1,8 +1,6 @@
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 
-import './callInfo.css';
-
 const CallInfo = ({ meetingInfo }) => {
   const [momentText, setMomentText] = useState(
     moment(meetingInfo.date).fromNow()

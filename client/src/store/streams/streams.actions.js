@@ -1,4 +1,4 @@
-export default (who, stream, peerConnection) => {
+export const addStream = (who, stream, peerConnection) => {
   return {
     type: 'ADD_STREAM',
     payload: {

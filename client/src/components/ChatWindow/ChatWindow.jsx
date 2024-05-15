@@ -1,5 +1,3 @@
-import './chatwindow.css';
-
 const ChatWindow = () => {
   return (
     <div className={`chat-window`}>

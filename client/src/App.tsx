@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import MainVideo from './routes/mainVideo/mainVideo';
 
 const Home = () => {
-  return <h1>test routes rendering</h1>;
+  return <h1>Hello, Home page</h1>;
 };
 
 function App() {
