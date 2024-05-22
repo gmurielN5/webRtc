@@ -7,7 +7,7 @@ import { startAudioStream } from '../../utils/startAudioStream';
 
 import { Dropdown } from '../Dropdown/Dropdown';
 
-import { FaCaretUp, FaMicrophone } from 'react-icons/fa';
+import { FaCaretUp, FaMicrophone } from 'react-icons/fa6';
 
 const AudioButton = ({ smallFeedEl }) => {
   const dispatch = useDispatch();
@@ -30,7 +30,6 @@ const AudioButton = ({ smallFeedEl }) => {
       if (isOpen) {
         //then we need to check for audio devices
         const devices = await getDevices();
-        console.log(devices.videoDevices);
         setAudioDeviceList(
           devices.audioOutputDevices.concat(devices.audioInputDevices)
         );
@@ -39,32 +38,31 @@ const AudioButton = ({ smallFeedEl }) => {
     getDevicesAsync();
   }, [isOpen]);
 
-  // const startStopAudio = () => {
-  //   //first, check if the audio is enabled, if so disabled
-  //   if (callStatus.audio === 'enabled') {
-  //     //update redux callStatus
-  //     dispatch(updateCallStatus('audio', 'disabled'));
-  //     //set the stream to disabled
-  //     const tracks = streams.localStream.stream.getAudioTracks();
-  //     tracks.forEach((t) => (t.enabled = false));
-  //   } else if (callStatus.audio === 'disabled') {
-  //     //second, check if the audio is disabled, if so enable
-  //     //update redux callStatus
-  //     dispatch(updateCallStatus('audio', 'enabled'));
-  //     const tracks = streams.localStream.stream.getAudioTracks();
-  //     tracks.forEach((t) => (t.enabled = true));
-  //   } else {
-  //     //audio is "off" What do we do?
-  //     changeAudioDevice({ target: { value: 'inputdefault' } });
-  //     //add the tracks
-  //     startAudioStream(streams);
-  //   }
-  // };
+  const startStopAudio = () => {
+    // check if the audio is enabled, if so disabled
+    if (callStatus.audio === 'enabled') {
+      //update redux callStatus
+      dispatch(updateCallStatus('audio', 'disabled'));
+      //set the stream to disabled
+      const tracks = streams.localStream.stream.getAudioTracks();
+      tracks.forEach((t) => (t.enabled = false));
+    } else if (callStatus.audio === 'disabled') {
+      //second, check if the audio is disabled, if so enable
+      //update redux callStatus
+      dispatch(updateCallStatus('audio', 'enabled'));
+      const tracks = streams.localStream.stream.getAudioTracks();
+      tracks.forEach((t) => (t.enabled = true));
+    } else {
+      //audio is "off" What do we do?
+      changeAudioDevice({ target: { value: 'inputdefault' } });
+      //add the tracks
+      startAudioStream(streams);
+    }
+  };
 
   const changeAudioDevice = async (e) => {
-    //   //the user changed the desired ouput audio device OR input audio device
-    //   //1. we need to get that deviceId AND the type
-    console.log(e.target.value);
+    //  user changed the desired ouput audio device OR input audio device
+    //  get  deviceId AND the type
     const deviceId = e.target.value.slice(5);
     const audioType = e.target.value.slice(0, 5);
     if (audioType === 'output') {
@@ -124,7 +122,7 @@ const AudioButton = ({ smallFeedEl }) => {
       </div>
       <div
         className="h-full flex flex-col justify-center items-center gap-y-2"
-        // onClick={startStopAudio}
+        onClick={startStopAudio}
       >
         <FaMicrophone size={24} color="#a3a3a3" />
         <div className="text-gray-400 invisible md:visible">

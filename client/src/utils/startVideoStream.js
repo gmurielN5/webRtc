@@ -4,7 +4,6 @@ import { updateCallStatus } from '../store/callStatus/callStatus.actions';
 export const startLocalVideoStream = (streams, dispatch) => {
   const localStream = streams.localStream;
   for (const s in streams) {
-    console.log('stream', s);
     if (s !== 'localStream') {
       const curStream = streams[s];
       //addTracks to all peerConnecions

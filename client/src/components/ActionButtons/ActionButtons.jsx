@@ -12,7 +12,7 @@ import {
   FaUsers,
   FaDesktop,
   FaCaretUp,
-} from 'react-icons/fa';
+} from 'react-icons/fa6';
 
 const ActionButtons = ({
   // openCloseChat,

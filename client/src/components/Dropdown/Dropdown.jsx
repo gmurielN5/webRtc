@@ -16,7 +16,6 @@ export const Dropdown = ({
     const audioOutputEl = [];
     deviceList.forEach((d, i) => {
       if (d.kind === 'audioinput') {
-        console.log(d);
         audioInputEl.push(
           <option
             key={`input${d.deviceId}`}

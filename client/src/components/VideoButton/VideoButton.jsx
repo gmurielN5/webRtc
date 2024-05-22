@@ -5,7 +5,7 @@ import { updateCallStatus } from '../../store/callStatus/callStatus.actions';
 import { addStream } from '../../store/streams/streams.actions';
 import { getDevices } from '../../utils/getDevices';
 import { Dropdown } from '../Dropdown/Dropdown';
-import { FaCaretUp, FaVideo } from 'react-icons/fa';
+import { FaCaretUp, FaVideo } from 'react-icons/fa6';
 
 const VideoButton = ({ smallFeedEl }) => {
   const dispatch = useDispatch();
@@ -90,7 +90,6 @@ const VideoButton = ({ smallFeedEl }) => {
       //   const tracks = streams.localStream.stream.getVideoTracks();
       //   tracks.forEach((t) => (t.enabled = true));
     } else if (callStatus.haveMedia) {
-      console.log('have media');
       smallFeedEl.current.srcObject = streams.localStream.stream;
       //add tracks to the peerConnections
       startLocalVideoStream(streams, dispatch);
@@ -101,7 +100,6 @@ const VideoButton = ({ smallFeedEl }) => {
 
   useEffect(() => {
     if (pendingUpdate && callStatus.haveMedia) {
-      console.log('is pending looking for video feed');
       smallFeedEl.current.srcObject = streams.localStream.stream;
       setPendingUpdate(false);
       // startLocalVideoStream(streams, dispatch);
