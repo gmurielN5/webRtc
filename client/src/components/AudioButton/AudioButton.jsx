@@ -28,7 +28,6 @@ const AudioButton = ({ smallFeedEl }) => {
   useEffect(() => {
     const getDevicesAsync = async () => {
       if (isOpen) {
-        //then we need to check for audio devices
         const devices = await getDevices();
         setAudioDeviceList(
           devices.audioOutputDevices.concat(devices.audioInputDevices)
@@ -47,13 +46,11 @@ const AudioButton = ({ smallFeedEl }) => {
       const tracks = streams.localStream.stream.getAudioTracks();
       tracks.forEach((t) => (t.enabled = false));
     } else if (callStatus.audio === 'disabled') {
-      //second, check if the audio is disabled, if so enable
       //update redux callStatus
       dispatch(updateCallStatus('audio', 'enabled'));
       const tracks = streams.localStream.stream.getAudioTracks();
       tracks.forEach((t) => (t.enabled = true));
     } else {
-      //audio is "off" What do we do?
       changeAudioDevice({ target: { value: 'inputdefault' } });
       //add the tracks
       startAudioStream(streams);
@@ -61,8 +58,6 @@ const AudioButton = ({ smallFeedEl }) => {
   };
 
   const changeAudioDevice = async (e) => {
-    //  user changed the desired ouput audio device OR input audio device
-    //  get  deviceId AND the type
     const deviceId = e.target.value.slice(5);
     const audioType = e.target.value.slice(0, 5);
     if (audioType === 'output') {
@@ -80,35 +75,26 @@ const AudioButton = ({ smallFeedEl }) => {
       const stream = await navigator.mediaDevices.getUserMedia(
         newConstraints
       );
-      //  update Redux with that videoDevice, and that video is enabled
+      //  update Redux with videoDevice
       dispatch(updateCallStatus('audioDevice', deviceId));
       dispatch(updateCallStatus('audio', 'enabled'));
       //  update the localStream in streams
       dispatch(addStream('localStream', stream));
-      //  add tracks - actually replaceTracks
-      const tracks = stream.getAudioTracks();
-      console.log(tracks);
-
-      // const [audioTrack] = stream.getAudioTracks();
-      //     //come back to this later
-      //     for (const s in streams) {
-      //       if (s !== 'localStream') {
-      //         //getSenders will grab all the RTCRtpSenders that the PC has
-      //         //RTCRtpSender manages how tracks are sent via the PC
-      //         const senders = streams[s].peerConnection.getSenders();
-      //         //find the sender that is in charge of the video track
-      //         const sender = senders.find((s) => {
-      //           if (s.track) {
-      //             //if this track matches the videoTrack kind, return it
-      //             return s.track.kind === audioTrack.kind;
-      //           } else {
-      //             return false;
-      //           }
-      //         });
-      //         //sender is RTCRtpSender, so it can replace the track
-      //         sender.replaceTrack(audioTrack);
-      //       }
-      //     }
+      //  add tracks
+      const [audioTrack] = stream.getAudioTracks();
+      for (const s in streams) {
+        if (s !== 'localStream') {
+          const senders = streams[s].peerConnection.getSenders();
+          const sender = senders.find((s) => {
+            if (s.track) {
+              return s.track.kind === audioTrack.kind;
+            } else {
+              return false;
+            }
+          });
+          sender.replaceTrack(audioTrack);
+        }
+      }
     }
   };
 
@@ -118,13 +104,13 @@ const AudioButton = ({ smallFeedEl }) => {
         className="w-full absolute top-1 right-0"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <FaCaretUp color="#fafafa" />
+        <FaCaretUp color="#f9fafb" />
       </div>
       <div
         className="h-full flex flex-col justify-center items-center gap-y-2"
         onClick={startStopAudio}
       >
-        <FaMicrophone size={24} color="#fafafa" />
+        <FaMicrophone size={24} color="#f9fafb" />
         <div className="text-gray-50 invisible md:visible">
           <p>{micText}</p>
         </div>

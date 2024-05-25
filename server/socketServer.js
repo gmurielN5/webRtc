@@ -25,12 +25,12 @@ io.on('connection', (socket) => {
   try {
     decodedData = jwt.verify(handshakeData, linkSecret);
   } catch (err) {
-    console.log(err);
     socket.disconnect();
     return;
   }
   const { fullName, proId } = decodedData;
   if (proId) {
+    // professional
     // check reconnection of same user
     const connectedPro = connectedProfessionals.find(
       (cp) => cp.proId === proId
@@ -44,13 +44,11 @@ io.on('connection', (socket) => {
         proId,
       });
     }
-
     const appointments = app.get('meetings');
     socket.emit(
       'meetingData',
       appointments.filter((pa) => pa.fullName === fullName)
     );
-
     //loop through all known offers and send out to the professional that just joined,
     for (const key in allKnownOffers) {
       if (allKnownOffers[key].fullName === fullName) {
@@ -59,69 +57,31 @@ io.on('connection', (socket) => {
       }
     }
   } else {
-    console.log('client');
-    // client id
-    // const { professionalsFullName, uuid, clientName } = decodedData;
+    // client
+    const { fullName, uuid, clientName } = decodedData;
     // check reconnection of same user
-    // const clientExist = connectedClients.find((c) => c.uuid == uuid);
-
-    // if (clientExist) {
-    //   //already connected. just update the id
-    //   clientExist.socketId = socket.id;
-    // } else {
-    //   //add them
-    //   connectedClients.push({
-    //     clientName,
-    //     uuid,
-    //     professionalMeetingWith: professionalsFullName,
-    //     socketId: socket.id,
-    //   });
-    // }
-
-    //   const offerForThisClient = allKnownOffers[uuid];
-    //   if (offerForThisClient) {
-    //     io.to(socket.id).emit(
-    //       'answerToClient',
-    //       offerForThisClient.answer
-    //     );
-    //   }
-  }
-
-  socket.on('newOffer', ({ offer, meetingInfo }) => {
-    allKnownOffers[meetingInfo.uuid] = {
-      ...meetingInfo,
-      offer,
-      offererIceCandidates: [],
-      answer: null,
-      answerIceCandidates: [],
-    };
-
-    const appointments = app.get('meetings');
-    //find this particular meeting so we can update that the user is waiting (has sent us an offer)
-    const pa = appointments.find(
-      (pa) => pa.uuid === meetingInfo.uuid
-    );
-    if (pa) {
-      pa.waiting = true;
+    const clientExist = connectedClients.find((c) => c.uuid == uuid);
+    if (clientExist) {
+      //already connected. update the id
+      clientExist.socketId = socket.id;
+    } else {
+      //   //add them
+      connectedClients.push({
+        clientName,
+        uuid,
+        professionalMeetingWith: fullName,
+        socketId: socket.id,
+      });
     }
 
-    //find this particular user  we can emit
-    const p = connectedProfessionals.find(
-      (cp) => cp.fullName === meetingInfo.fullName
-    );
-    if (p) {
-      const socketId = p.socketId;
-      socket
-        .to(socketId)
-        .emit('newOfferWaiting', allKnownOffers[meetingInfo.uuid]);
-      socket.to(socketId).emit(
-        'meetingData',
-        appointments.filter(
-          (pa) => pa.fullName === meetingInfo.fullName
-        )
+    const offerForThisClient = allKnownOffers[uuid];
+    if (offerForThisClient) {
+      io.to(socket.id).emit(
+        'answerToClient',
+        offerForThisClient.answer
       );
     }
-  });
+  }
 
   socket.on('newAnswer', ({ answer, uuid }) => {
     //emit this to the client
@@ -142,7 +102,6 @@ io.on('connection', (socket) => {
 
   socket.on('newOffer', ({ offer, meetingInfo }) => {
     //offer = sdp/type, meetingInfo has the uuid that we can add to allKnownOffers
-    //so that, the professional can find EXACTLY the right allKnownOffers
     allKnownOffers[meetingInfo.uuid] = {
       ...meetingInfo,
       offer,
@@ -186,7 +145,6 @@ io.on('connection', (socket) => {
 
   socket.on('getIce', (uuid, who, ackFunc) => {
     const offer = allKnownOffers[uuid];
-    // console.log(offer)
     let iceCandidates = [];
     if (offer) {
       if (who === 'professional') {
@@ -198,31 +156,28 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('iceToServer', ({ who, iceC, uuid }) => {
-    console.log('==============', who);
+  socket.on('iceToServer', ({ who, iceCandidate, uuid }) => {
     const offerToUpdate = allKnownOffers[uuid];
     if (offerToUpdate) {
       if (who === 'client') {
-        //this means the client has sent up an iceC
-        //update the offer
-        offerToUpdate.offererIceCandidates.push(iceC);
+        offerToUpdate.offererIceCandidates.push(iceCandidate);
         const socketToSendTo = connectedProfessionals.find(
           (cp) => cp.fullName === decodedData.fullName
         );
         if (socketToSendTo) {
           socket
             .to(socketToSendTo.socketId)
-            .emit('iceToClient', iceC);
+            .emit('iceToClient', iceCandidate);
         }
       } else if (who === 'professional') {
-        offerToUpdate.answerIceCandidates.push(iceC);
+        offerToUpdate.answerIceCandidates.push(iceCandidate);
         const socketToSendTo = connectedClients.find(
           (cp) => cp.uuid == uuid
         );
         if (socketToSendTo) {
           socket
             .to(socketToSendTo.socketId)
-            .emit('iceToClient', iceC);
+            .emit('iceToClient', iceCandidate);
         }
       }
     }

@@ -1,7 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-
-import { socketConnection } from '../../utils/socketConnection';
 
 import HangupButton from '../HangupButton/HangupButton';
 import VideoButton from '../VideoButton/VideoButton';
@@ -17,7 +15,7 @@ import {
 const ActionButtons = ({
   // openCloseChat,
   smallFeedEl,
-  // largeFeedEl,
+  largeFeedEl,
 }) => {
   const callStatus = useSelector((state) => state.callStatus);
   const menuButtons = useRef(null);
@@ -53,7 +51,7 @@ const ActionButtons = ({
     <div
       id="menu-buttons"
       ref={menuButtons}
-      className="bg-neutral-900 absolute bottom-0 left-0 w-screen h-20 flex flex-row"
+      className="bg-gray-900 absolute bottom-0 left-0 w-screen h-20 flex flex-row"
     >
       <div className="basis-1/4 flex justify-around items-baseline px-2 md:px-4">
         <AudioButton smallFeedEl={smallFeedEl} />
@@ -61,25 +59,25 @@ const ActionButtons = ({
       </div>
 
       <div className="basis-2/4 flex justify-around items-baseline">
-        <div className="w-full h-full relative hover:bg-neutral-800 hover:cursor-pointer">
+        <div className="w-full h-full relative hover:bg-gray-800 hover:cursor-pointer">
           <div className="w-full absolute top-1 right-0">
-            <FaCaretUp color="#fafafa" />
+            <FaCaretUp color="#f9fafb" />
           </div>
           <div className="h-full flex flex-col justify-center items-center gap-y-2">
-            <FaUsers size={24} color="#fafafa" />
+            <FaUsers size={24} color="#f9fafb" />
             <div className="text-gray-50 invisible md:visible">
               <p>Participants</p>
             </div>
           </div>
         </div>
-        <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-neutral-800 hover:cursor-pointer">
-          <FaComment size={24} color="#fafafa" />
+        <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-gray-800 hover:cursor-pointer">
+          <FaComment size={24} color="#f9fafb" />
           <div className="text-gray-50 invisible md:visible">
             <p>Chat</p>
           </div>
         </div>
-        <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-neutral-800 hover:cursor-pointer">
-          <FaDesktop size={24} color="#fafafa" />
+        <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-gray-800 hover:cursor-pointer">
+          <FaDesktop size={24} color="#f9fafb" />
           <div className="text-gray-50 invisible md:visible">
             <p>Share Screen</p>
           </div>
@@ -88,8 +86,8 @@ const ActionButtons = ({
 
       <div className="basis-1/4 flex justify-end items-center px-2 md:px-4">
         <HangupButton
-        // smallFeedEl={smallFeedEl}
-        // largeFeedEl={largeFeedEl}
+          smallFeedEl={smallFeedEl}
+          largeFeedEl={largeFeedEl}
         />
       </div>
     </div>

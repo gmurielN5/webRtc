@@ -6,8 +6,9 @@ import proSocketListeners from '../../utils/proSocketListener';
 import moment from 'moment';
 
 import logo from '../../assets/hub.svg';
-
 import {
+  FaBars,
+  FaXmark,
   FaHouse,
   FaUsers,
   FaCalendar,
@@ -18,6 +19,7 @@ import {
 export const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const [meetingInfo, setMeetingInfo] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -41,51 +43,53 @@ export const Dashboard = () => {
 
   return (
     <div className="w-full h-full flex">
-      <div className="px-8 py-4  md:w-1/5 md:h-screen flex-col justify-start sm:flex bg-neutral-900 shadow">
+      <div className="px-8 py-4  md:w-1/5 md:h-screen flex-col justify-start sm:flex bg-gray-900 shadow">
         <div className="w-full flex items-center">
           <img src={logo} alt="hub logo" />
         </div>
         <ul className="mt-12">
           <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
-            <FaHouse color="#fafafa" />
+            <FaHouse color="#f9fafb" />
             <span>Dashboard</span>
           </li>
           <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
-            <FaClock color="#fafafa" />
+            <FaClock color="#f9fafb" />
             <span>Meetings</span>
           </li>
           <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
-            <FaUsers color="#fafafa" />
+            <FaUsers color="#f9fafb" />
             <span>Contacts</span>
           </li>
           <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
-            <FaCommentDots color="#fafafa" />
+            <FaCommentDots color="#f9fafb" />
             <span>Messages</span>
           </li>
           <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
-            <FaCalendar color="#fafafa" />
+            <FaCalendar color="#f9fafb" />
             <span>Calendar</span>
           </li>
         </ul>
       </div>
-      <div className="bg-neutral-700 w-full">
-        <div className="bg-neutral-900 shadow py-8 px-2">
-          <h1 className="text-2xl text-neutral-50 uppercase">
+      <div className="bg-gray-50 w-full">
+        <div className="bg-gray-900 shadow py-8 px-2">
+          <h1 className="text-2xl text-gray-50 uppercase">
             Dashboard
           </h1>
         </div>
         <div className="p-8 columns-2 gap-4">
-          <div className="h-64 bg-neutral-200 p-6 rounded-md">
-            <h4 className="text-xl mb-4">Clients</h4>
+          <div className="h-64 bg-gray-700 p-6 rounded-md">
+            <h4 className="text-xl mb-4 text-gray-50">Clients</h4>
             <ul>
-              <li className="">Jim Jones</li>
+              <li className="text-gray-50">Jim Jones</li>
             </ul>
           </div>
-          <div className="h-64 bg-neutral-200 p-6 rounded-md">
-            <h4 className="text-xl mb-4">Coming Appointments</h4>
+          <div className="h-64 bg-gray-700 p-6 rounded-md">
+            <h4 className="text-xl mb-4 text-gray-50">
+              Coming Appointments
+            </h4>
             {meetingInfo.map((a) => (
               <ul key={a.uuid}>
-                <li className="min-h-10 flex justify-between items-center">
+                <li className="min-h-10 flex justify-between items-center text-gray-50">
                   {a.clientName} - {moment(a.meetingDate).calendar()}
                   {a.waiting ? (
                     <div className="flex justify-between items-center gap-4">

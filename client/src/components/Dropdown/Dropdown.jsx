@@ -41,7 +41,7 @@ export const Dropdown = ({
   }
 
   return (
-    <div className="absolute bg-neutral-50 text-neutral-950 px-4 -top-6">
+    <div className="absolute bg-gray-50 text-gray-950 px-4 -top-6">
       <select defaultValue={defaultValue} onChange={changeHandler}>
         {dropDownEl}
       </select>

@@ -46,49 +46,38 @@ const VideoButton = ({ smallFeedEl }) => {
     // update the localStream in streams
     dispatch(addStream('localStream', stream));
     // add tracks
-    const tracks = stream.getVideoTracks();
-
-    // const [videoTrack] = stream.getVideoTracks();
-    //   //come back to this later
-    //   //if we stop the old tracks, and add the new tracks, that will mean
-    //   // ... renegotiation
-    //   for (const s in streams) {
-    //     if (s !== 'localStream') {
-    //       //getSenders will grab all the RTCRtpSenders that the PC has
-    //       //RTCRtpSender manages how tracks are sent via the PC
-    //       const senders = streams[s].peerConnection.getSenders();
-    //       //find the sender that is in charge of the video track
-    //       const sender = senders.find((s) => {
-    //         if (s.track) {
-    //           //if this track matches the videoTrack kind, return it
-    //           return s.track.kind === videoTrack.kind;
-    //         } else {
-    //           return false;
-    //         }
-    //       });
-    //       //sender is RTCRtpSender, so it can replace the track
-    //       sender.replaceTrack(videoTrack);
-    //     }
-    //   }
+    const [videoTrack] = stream.getVideoTracks();
+    for (const s in streams) {
+      if (s !== 'localStream') {
+        //  RTCRtpSender manages how tracks are sent via the Peer Connection
+        const senders = streams[s].peerConnection.getSenders();
+        //find the sender that is in charge of the video track
+        const sender = senders.find((s) => {
+          if (s.track) {
+            //if this track matches the videoTrack kind, return it
+            return s.track.kind === videoTrack.kind;
+          } else {
+            return false;
+          }
+        });
+        //sender is RTCRtpSender, replace the track
+        sender.replaceTrack(videoTrack);
+      }
+    }
   };
 
   const startStopVideo = () => {
     //first, check if the video is enabled, if so disabled
     if (callStatus.video === 'enabled') {
-      console.log('media enable');
-      //   //update redux callStatus
-      //   dispatch(updateCallStatus('video', 'disabled'));
-      //   //set the stream to disabled
-      //   const tracks = streams.localStream.stream.getVideoTracks();
-      //   tracks.forEach((t) => (t.enabled = false));
+      //update redux callStatus
+      dispatch(updateCallStatus('video', 'disabled'));
+      //set the stream to disabled
+      const tracks = streams.localStream.stream.getVideoTracks();
+      tracks.forEach((t) => (t.enabled = false));
     } else if (callStatus.video === 'disabled') {
-      console.log('media disable');
-
-      //   //second, check if the video is disabled, if so enable
-      //   //update redux callStatus
-      //   dispatch(updateCallStatus('video', 'enabled'));
-      //   const tracks = streams.localStream.stream.getVideoTracks();
-      //   tracks.forEach((t) => (t.enabled = true));
+      dispatch(updateCallStatus('video', 'enabled'));
+      const tracks = streams.localStream.stream.getVideoTracks();
+      tracks.forEach((t) => (t.enabled = true));
     } else if (callStatus.haveMedia) {
       smallFeedEl.current.srcObject = streams.localStream.stream;
       //add tracks to the peerConnections
@@ -100,14 +89,14 @@ const VideoButton = ({ smallFeedEl }) => {
 
   useEffect(() => {
     if (pendingUpdate && callStatus.haveMedia) {
-      smallFeedEl.current.srcObject = streams.localStream.stream;
       setPendingUpdate(false);
-      // startLocalVideoStream(streams, dispatch);
+      smallFeedEl.current.srcObject = streams.localStream.stream;
+      startLocalVideoStream(streams, dispatch);
     }
   }, [pendingUpdate, callStatus.haveMedia, smallFeedEl, streams]);
 
   return (
-    <div className="w-full h-full relative hover:bg-neutral-800 hover:cursor-pointer">
+    <div className="w-full h-full relative hover:bg-gray-800 hover:cursor-pointer">
       <div
         className="absolute top-1"
         onClick={() => setIsOpen(!isOpen)}
