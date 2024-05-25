@@ -10,6 +10,7 @@ const initState = {
 };
 
 export const callStatusReducer = (state = initState, action) => {
+  console.log('call status state', state);
   if (action.type === 'UPDATE_CALL_STATUS') {
     const copyState = { ...state };
     copyState[action.payload.prop] = action.payload.value;

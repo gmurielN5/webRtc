@@ -8,11 +8,10 @@ import { updateCallStatus } from '../../store/callStatus/callStatus.actions';
 import { createPeerConnection } from '../../utils/peerConnection';
 import { socketConnection } from '../../utils/socketConnection';
 
-import CallInfo from '../../components/CallInfo/CallInfo';
 import ChatWindow from '../../components/ChatWindow/ChatWindow';
 import ActionButtons from '../../components/ActionButtons/ActionButtons';
 
-export const MainVideo = () => {
+export const ProMainVideo = () => {
   const dispatch = useDispatch();
   const callStatus = useSelector((state) => state.callStatus);
   const streams = useSelector((state) => state.streams);
@@ -20,9 +19,8 @@ export const MainVideo = () => {
   const [meetingInfo, setMeetingInfo] = useState({});
   const smallFeedEl = useRef(null);
   const largeFeedEl = useRef(null);
-  // const uuidRef = useRef(null);
+  // const [haveGottenIce, setHaveGottenIce] = useState(false);
   // const streamsRef = useRef(null);
-  const [showCallInfo, setShowCallInfo] = useState(true);
 
   useEffect(() => {
     //fetch the user media
@@ -51,64 +49,86 @@ export const MainVideo = () => {
   }, [dispatch]);
 
   //  useEffect(() => {
-  //    //we cannot update streamsRef until we know redux is finished
-  //    if (streams.remote1) {
-  //      streamsRef.current = streams;
+  //    const getIceAsync = async () => {
+  //      const socket = socketConnection(searchParams.get('token'));
+  //      const uuid = searchParams.get('uuid');
+  //      const iceCandidates = await socket.emitWithAck(
+  //        'getIce',
+  //        uuid,
+  //        'professional'
+  //      );
+  //      console.log('iceCandidate Received');
+  //      console.log(iceCandidates);
+  //      iceCandidates.forEach((iceC) => {
+  //        for (const s in streams) {
+  //          if (s !== 'localStream') {
+  //            const pc = streams[s].peerConnection;
+  //            pc.addIceCandidate(iceC);
+  //            console.log('=======Added Ice Candidate!!!!!!!');
+  //          }
+  //        }
+  //      });
+  //    };
+  //    if (streams.remote1 && !haveGottenIce) {
+  //      setHaveGottenIce(true);
+  //      getIceAsync();
+  //      streamsRef.current = streams; //update streamsRef once we know streams exists
   //    }
-  //  }, [streams]);
+  //  }, [streams, haveGottenIce]);
 
   useEffect(() => {
-    const createOfferAsync = async () => {
-      //we have audio and video and we need an offer. Let's make it!
+    const setAsyncOffer = async () => {
       for (const s in streams) {
         if (s !== 'localStream') {
-          try {
-            const pc = streams[s].peerConnection;
-            const offer = await pc.createOffer();
-            pc.setLocalDescription(offer);
-            //get the token from the url for the socket connection
-            const token = searchParams.get('token');
-            //get the socket from socketConnection
-            const socket = socketConnection(token);
-            socket.emit('newOffer', { offer, meetingInfo });
-          } catch (err) {
-            console.log(err);
-          }
+          const pc = streams[s].peerConnection;
+          await pc.setRemoteDescription(callStatus.offer);
+          console.log('have remote offer', pc.signalingstate);
         }
       }
-      dispatch(updateCallStatus('haveCreatedOffer', true));
     };
+    if (
+      callStatus.offer &&
+      streams.remote1 &&
+      streams.remote1.peerConnection
+    ) {
+      setAsyncOffer();
+    }
+  }, [callStatus.offer, streams.remote1]);
+
+  useEffect(() => {
+    const createAnswerAsync = async () => {
+      //we have audio and video, we can make an answer and setLocalDescription
+      for (const s in streams) {
+        if (s !== 'localStream') {
+          const pc = streams[s].peerConnection;
+          //make an answer
+          const answer = await pc.createAnswer();
+          await pc.setLocalDescription(answer);
+          console.log('have local answer', pc.signalingState);
+          dispatch(updateCallStatus('haveCreatedAnswer', true));
+          dispatch(updateCallStatus('answer', answer));
+          //emit the answer to the server
+          const token = searchParams.get('token');
+          const socket = socketConnection(token);
+          const uuid = searchParams.get('uuid');
+          console.log('emitting', answer, uuid);
+          socket.emit('newAnswer', { answer, uuid });
+        }
+      }
+    };
+    //we only create an answer if audio and video are enabled AND haveCreatedAnswer is false
     if (
       callStatus.audio === 'enabled' &&
       callStatus.video === 'enabled' &&
-      !callStatus.haveCreatedOffer
+      !callStatus.haveCreatedAnswer
     ) {
-      createOfferAsync();
+      createAnswerAsync();
     }
   }, [
     callStatus.audio,
     callStatus.video,
-    callStatus.haveCreatedOffer,
+    callStatus.haveCreatedAnswer,
   ]);
-
-  // useEffect(() => {
-  //   const asyncAddAnswer = async () => {
-  //     //listen for changes to callStatus.answer
-  //     //if it exists, we have an answer!
-  //     for (const s in streams) {
-  //       if (s !== 'localStream') {
-  //         const pc = streams[s].peerConnection;
-  //         await pc.setRemoteDescription(callStatus.answer);
-  //         console.log(pc.signalingState);
-  //         console.log('Answer added!');
-  //       }
-  //     }
-  //   };
-
-  //   if (callStatus.answer) {
-  //     asyncAddAnswer();
-  //   }
-  // }, [callStatus.answer]);
 
   useEffect(() => {
     const token = searchParams.get('token');
@@ -155,7 +175,7 @@ export const MainVideo = () => {
   // };
 
   return (
-    <div>
+    <div className="main-video-page">
       <div className="relative overflow-hidden">
         <video
           className="bg-neutral-950 w-screen h-screen"
@@ -171,9 +191,15 @@ export const MainVideo = () => {
           controls
           playsInline
         ></video>
-        {!showCallInfo ? null : (
-          <CallInfo meetingInfo={meetingInfo} />
-        )}
+        {callStatus.audio === 'off' || callStatus.video === 'off' ? (
+          <div className="absolute w-96 top-1/3 right-1/3 bg-neutral-950 shadow-neutral-100 rounded p-6">
+            <h1 className="text-gray-50 text-center">
+              {searchParams.get('client')} is in the waiting room.
+              <br />
+              Call will start when video and audio are enabled
+            </h1>
+          </div>
+        ) : null}
         <ChatWindow />
       </div>
       <ActionButtons

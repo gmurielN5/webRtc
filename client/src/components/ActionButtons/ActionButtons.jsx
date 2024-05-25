@@ -63,24 +63,24 @@ const ActionButtons = ({
       <div className="basis-2/4 flex justify-around items-baseline">
         <div className="w-full h-full relative hover:bg-neutral-800 hover:cursor-pointer">
           <div className="w-full absolute top-1 right-0">
-            <FaCaretUp color="#a3a3a3" />
+            <FaCaretUp color="#fafafa" />
           </div>
           <div className="h-full flex flex-col justify-center items-center gap-y-2">
-            <FaUsers size={24} color="#a3a3a3" />
-            <div className="text-gray-400 invisible md:visible">
+            <FaUsers size={24} color="#fafafa" />
+            <div className="text-gray-50 invisible md:visible">
               <p>Participants</p>
             </div>
           </div>
         </div>
         <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-neutral-800 hover:cursor-pointer">
-          <FaComment size={24} color="#a3a3a3" />
-          <div className="text-gray-400 invisible md:visible">
+          <FaComment size={24} color="#fafafa" />
+          <div className="text-gray-50 invisible md:visible">
             <p>Chat</p>
           </div>
         </div>
         <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-neutral-800 hover:cursor-pointer">
-          <FaDesktop size={24} color="#a3a3a3" />
-          <div className="text-gray-400 invisible md:visible">
+          <FaDesktop size={24} color="#fafafa" />
+          <div className="text-gray-50 invisible md:visible">
             <p>Share Screen</p>
           </div>
         </div>

@@ -118,14 +118,14 @@ const AudioButton = ({ smallFeedEl }) => {
         className="w-full absolute top-1 right-0"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <FaCaretUp color="#a3a3a3" />
+        <FaCaretUp color="#fafafa" />
       </div>
       <div
         className="h-full flex flex-col justify-center items-center gap-y-2"
         onClick={startStopAudio}
       >
-        <FaMicrophone size={24} color="#a3a3a3" />
-        <div className="text-gray-400 invisible md:visible">
+        <FaMicrophone size={24} color="#fafafa" />
+        <div className="text-gray-50 invisible md:visible">
           <p>{micText}</p>
         </div>
       </div>

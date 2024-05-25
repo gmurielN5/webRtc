@@ -7,11 +7,11 @@ export const createPeerConnection = (addIce) => {
     );
     const remoteStream = new MediaStream();
     peerConnection.addEventListener('signalingstatechange', (e) => {
-      // console.log('Signaling State Change');
-      // console.log(e);
+      console.log('Signaling State Change');
+      console.log(e);
     });
     peerConnection.addEventListener('icecandidate', (e) => {
-      // console.log('Found ice candidate...', e);
+      console.log('Found ice candidate...', e);
       if (e.candidate) {
         // addIce(e.candidate);
       }

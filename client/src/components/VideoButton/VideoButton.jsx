@@ -112,14 +112,14 @@ const VideoButton = ({ smallFeedEl }) => {
         className="absolute top-1"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <FaCaretUp color="#a3a3a3" />
+        <FaCaretUp color="#fafafa" />
       </div>
       <button
         className="h-full flex flex-col justify-center items-center gap-y-2"
         onClick={startStopVideo}
       >
-        <FaVideo size={24} color="#a3a3a3" />
-        <p className="text-gray-400 invisible md:visible">
+        <FaVideo size={24} color="#fafafa" />
+        <p className="text-gray-50 invisible md:visible">
           {callStatus.video === 'enabled' ? 'Stop' : 'Start'} Video
         </p>
       </button>
