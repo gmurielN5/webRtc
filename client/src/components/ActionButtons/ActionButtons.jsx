@@ -49,47 +49,43 @@ const ActionButtons = ({
 
   return (
     <div
-      id="menu-buttons"
       ref={menuButtons}
-      className="bg-gray-900 absolute bottom-0 left-0 w-screen h-20 flex flex-row"
+      className="bg-gray-900 absolute bottom-0 left-0 w-screen h-auto flex justify-between md:gap-4"
     >
-      <div className="basis-1/4 flex justify-around items-baseline px-2 md:px-4">
+      <div className="flex gap-2 px-4 justify-center">
         <AudioButton smallFeedEl={smallFeedEl} />
         <VideoButton smallFeedEl={smallFeedEl} />
       </div>
 
-      <div className="basis-2/4 flex justify-around items-baseline">
-        <div className="w-full h-full relative hover:bg-gray-800 hover:cursor-pointer">
-          <div className="w-full absolute top-1 right-0">
+      <div className="md:w-3/4 flex gap-2 px-4 justify-center">
+        <div className="relative flex md:w-36 hover:bg-gray-800 hover:cursor-pointer p-2">
+          <div className="absolute top-1 right-1">
             <FaCaretUp color="#f9fafb" />
           </div>
-          <div className="h-full flex flex-col justify-center items-center gap-y-2">
+          <div className="flex flex-col justify-center items-center gap-2">
             <FaUsers size={24} color="#f9fafb" />
-            <div className="text-gray-50 invisible md:visible">
+            <div className="text-gray-50 hidden md:block">
               <p>Participants</p>
             </div>
           </div>
         </div>
-        <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-gray-800 hover:cursor-pointer">
+        <div className="md:w-36 flex flex-col justify-center items-center gap-2 hover:bg-gray-800 hover:cursor-pointer p-2">
           <FaComment size={24} color="#f9fafb" />
-          <div className="text-gray-50 invisible md:visible">
+          <div className="text-gray-50 hidden md:block">
             <p>Chat</p>
           </div>
         </div>
-        <div className="w-full h-full flex flex-col justify-center items-center gap-y-2 hover:bg-gray-800 hover:cursor-pointer">
+        <div className="md:w-36 flex flex-col justify-center items-center gap-2 hover:bg-gray-800 hover:cursor-pointer p-2">
           <FaDesktop size={24} color="#f9fafb" />
-          <div className="text-gray-50 invisible md:visible">
+          <div className="text-gray-50 hidden md:block">
             <p>Share Screen</p>
           </div>
         </div>
       </div>
-
-      <div className="basis-1/4 flex justify-end items-center px-2 md:px-4">
-        <HangupButton
-          smallFeedEl={smallFeedEl}
-          largeFeedEl={largeFeedEl}
-        />
-      </div>
+      <HangupButton
+        smallFeedEl={smallFeedEl}
+        largeFeedEl={largeFeedEl}
+      />
     </div>
   );
 };

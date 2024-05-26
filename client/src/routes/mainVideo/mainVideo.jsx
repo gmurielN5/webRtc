@@ -9,9 +9,7 @@ import { createPeerConnection } from '../../utils/peerConnection';
 import { socketConnection } from '../../utils/socketConnection';
 import { clientSocketListeners } from '../../utils/clientSocketListeners';
 
-import CallInfo from '../../components/CallInfo/CallInfo';
-import ChatWindow from '../../components/ChatWindow/ChatWindow';
-import ActionButtons from '../../components/ActionButtons/ActionButtons';
+import { VideoComponent } from '../../components/VideoComponent/VideoComponent';
 
 export const MainVideo = () => {
   const dispatch = useDispatch();
@@ -153,31 +151,11 @@ export const MainVideo = () => {
   };
 
   return (
-    <div>
-      <div className="relative overflow-hidden">
-        <video
-          className="bg-gray-950 w-screen h-screen"
-          ref={largeFeedEl}
-          autoPlay
-          controls
-          playsInline
-        ></video>
-        <video
-          className="absolute w-80 top-5 right-4 border-2 border-white rounded"
-          ref={smallFeedEl}
-          autoPlay
-          controls
-          playsInline
-        ></video>
-        {!showCallInfo ? null : (
-          <CallInfo meetingInfo={meetingInfo} />
-        )}
-        <ChatWindow />
-      </div>
-      <ActionButtons
-        smallFeedEl={smallFeedEl}
-        largeFeedEl={largeFeedEl}
-      />
-    </div>
+    <VideoComponent
+      largeFeedEl={largeFeedEl}
+      smallFeedEl={smallFeedEl}
+      isShowing={showCallInfo}
+      meetingInfo={meetingInfo}
+    />
   );
 };

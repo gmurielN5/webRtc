@@ -9,15 +9,14 @@ import { createPeerConnection } from '../../utils/peerConnection';
 import { socketConnection } from '../../utils/socketConnection';
 import proSocketListeners from '../../utils/proSocketListener';
 
-import ChatWindow from '../../components/ChatWindow/ChatWindow';
-import ActionButtons from '../../components/ActionButtons/ActionButtons';
+import { VideoComponent } from '../../components/VideoComponent/VideoComponent';
 
 export const ProMainVideo = () => {
   const dispatch = useDispatch();
   const callStatus = useSelector((state) => state.callStatus);
   const streams = useSelector((state) => state.streams);
   const [searchParams] = useSearchParams();
-  const [, setMeetingInfo] = useState({});
+  const [meetingInfo, setMeetingInfo] = useState({});
   const smallFeedEl = useRef(null);
   const largeFeedEl = useRef(null);
   const [haveGottenIce, setHaveGottenIce] = useState(false);
@@ -167,37 +166,14 @@ export const ProMainVideo = () => {
   };
 
   return (
-    <div className="main-video-page">
-      <div className="relative overflow-hidden">
-        <video
-          className="bg-gray-950 w-screen h-screen"
-          ref={largeFeedEl}
-          autoPlay
-          controls
-          playsInline
-        ></video>
-        <video
-          className="absolute w-80 top-5 right-4 border-2 border-white rounded"
-          ref={smallFeedEl}
-          autoPlay
-          controls
-          playsInline
-        ></video>
-        {callStatus.audio === 'off' || callStatus.video === 'off' ? (
-          <div className="absolute w-96 top-1/3 right-1/3 bg-gray-950 shadow-gray-100 rounded p-6">
-            <h1 className="text-gray-50 text-center">
-              {searchParams.get('client')} is in the waiting room.
-              <br />
-              Call will start when video and audio are enabled
-            </h1>
-          </div>
-        ) : null}
-        <ChatWindow />
-      </div>
-      <ActionButtons
-        smallFeedEl={smallFeedEl}
-        largeFeedEl={largeFeedEl}
-      />
-    </div>
+    <VideoComponent
+      largeFeedEl={largeFeedEl}
+      smallFeedEl={smallFeedEl}
+      isShowing={
+        callStatus.audio === 'off' || callStatus.video === 'off'
+      }
+      pro={true}
+      meetingInfo={meetingInfo}
+    />
   );
 };

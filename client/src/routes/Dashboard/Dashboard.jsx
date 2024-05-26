@@ -42,54 +42,55 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="w-full h-full flex">
-      <div className="px-8 py-4  md:w-1/5 md:h-screen flex-col justify-start sm:flex bg-gray-900 shadow">
-        <div className="w-full flex items-center">
+    <div className="w-full h-full flex flex-col-reverse md:flex-row">
+      <div className="fixed bottom-0 w-full md:relative md:w-1/5 md:h-screen flex-col justify-start bg-gray-900 shadow px-8 py-4">
+        <div className="w-full hidden md:flex items-center">
           <img src={logo} alt="hub logo" />
         </div>
-        <ul className="mt-12">
-          <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
+        <ul className="md:mt-12 flex justify-center md:flex-col">
+          <li className="flex w-full justify-center md:justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
             <FaHouse color="#f9fafb" />
-            <span>Dashboard</span>
+            <span className="hidden md:block">Dashboard</span>
           </li>
-          <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
+          <li className="flex w-full justify-center md:justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
             <FaClock color="#f9fafb" />
-            <span>Meetings</span>
+            <span className="hidden md:block">Meetings</span>
           </li>
-          <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
+          <li className="flex w-full justify-center  md:justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
             <FaUsers color="#f9fafb" />
-            <span>Contacts</span>
+            <span className="hidden md:block">Contacts</span>
           </li>
-          <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
+          <li className="flex w-full justify-center md:justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
             <FaCommentDots color="#f9fafb" />
-            <span>Messages</span>
+            <span className="hidden md:block">Messages</span>
           </li>
-          <li className="flex w-full justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
+          <li className="flex w-full justify-center md:justify-start gap-2 text-gray-50 cursor-pointer items-center mb-6">
             <FaCalendar color="#f9fafb" />
-            <span>Calendar</span>
+            <span className="hidden md:block">Calendar</span>
           </li>
         </ul>
       </div>
-      <div className="bg-gray-50 w-full">
-        <div className="bg-gray-900 shadow py-8 px-2">
+      <div className="bg-gray-800 w-full pb-12">
+        <div className="bg-gray-900 shadow py-2 md:py-8 px-2 flex items-center gap-4">
+          <div className="md:hidden">
+            <img src={logo} alt="hub logo" />
+          </div>
           <h1 className="text-2xl text-gray-50 uppercase">
             Dashboard
           </h1>
         </div>
-        <div className="p-8 columns-2 gap-4">
-          <div className="h-64 bg-gray-700 p-6 rounded-md">
-            <h4 className="text-xl mb-4 text-gray-50">Clients</h4>
+        <div className="p-8 md:columns-2 gap-4">
+          <div className="min-h-64 bg-gray-50 p-6 rounded-md mb-4 text-gray-900">
+            <h4 className="text-xl mb-4">Clients</h4>
             <ul>
-              <li className="text-gray-50">Jim Jones</li>
+              <li>Jim Jones</li>
             </ul>
           </div>
-          <div className="h-64 bg-gray-700 p-6 rounded-md">
-            <h4 className="text-xl mb-4 text-gray-50">
-              Coming Appointments
-            </h4>
+          <div className="min-h-64 bg-gray-50 p-6 rounded-md text-gray-900">
+            <h4 className="text-xl mb-4">Coming Appointments</h4>
             {meetingInfo.map((a) => (
               <ul key={a.uuid}>
-                <li className="min-h-10 flex justify-between items-center text-gray-50">
+                <li className="min-h-10 md:flex justify-between items-center">
                   {a.clientName} - {moment(a.meetingDate).calendar()}
                   {a.waiting ? (
                     <div className="flex justify-between items-center gap-4">

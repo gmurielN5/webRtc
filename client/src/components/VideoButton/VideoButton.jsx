@@ -96,19 +96,19 @@ const VideoButton = ({ smallFeedEl }) => {
   }, [pendingUpdate, callStatus.haveMedia, smallFeedEl, streams]);
 
   return (
-    <div className="w-full h-full relative hover:bg-gray-800 hover:cursor-pointer">
+    <div className="relative flex md:w-36 hover:bg-gray-800 hover:cursor-pointer p-2">
       <div
-        className="absolute top-1"
+        className="absolute top-1 right-1"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <FaCaretUp color="#fafafa" />
+        <FaCaretUp color="#f9fafb" />
       </div>
       <button
-        className="h-full flex flex-col justify-center items-center gap-y-2"
+        className="flex flex-col justify-center items-center gap-2"
         onClick={startStopVideo}
       >
-        <FaVideo size={24} color="#fafafa" />
-        <p className="text-gray-50 invisible md:visible">
+        <FaVideo size={24} color="#f9fafb" />
+        <p className="text-gray-50 hidden md:block">
           {callStatus.video === 'enabled' ? 'Stop' : 'Start'} Video
         </p>
       </button>

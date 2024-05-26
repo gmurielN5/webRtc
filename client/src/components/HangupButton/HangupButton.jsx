@@ -25,7 +25,7 @@ const HangupButton = ({ largeFeedEl, smallFeedEl }) => {
       {callStatus.current === 'complete' ? null : (
         <button
           onClick={hangupCall}
-          className="bg-red-600 hover:bg-red-800 text-white font-semibold py-2 px-4 rounded-md shadow"
+          className="bg-red-600 hover:bg-red-800 text-white font-semibold py-2 px-4 rounded-md shadow m-2"
         >
           Hang Up
         </button>
