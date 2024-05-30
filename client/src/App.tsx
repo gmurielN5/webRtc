@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { Dashboard } from './routes/Dashboard/Dashboard';
@@ -8,7 +9,7 @@ const Home = () => {
   return <h1>Hello, Home page</h1>;
 };
 
-function App() {
+export const App: FC = () => {
   return (
     <Routes>
       <Route path="/" Component={Home} />
@@ -17,6 +18,4 @@ function App() {
       <Route path="/join-video-pro" Component={ProMainVideo} />
     </Routes>
   );
-}
-
-export default App;
+};
