@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { Dashboard } from './routes/Dashboard/Dashboard';
@@ -9,7 +8,7 @@ const Home = () => {
   return <h1>Hello, Home page</h1>;
 };
 
-export const App: FC = () => {
+export const App = () => {
   return (
     <Routes>
       <Route path="/" Component={Home} />
