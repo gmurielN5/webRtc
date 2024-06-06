@@ -7,8 +7,6 @@ import moment from 'moment';
 
 import logo from '../../assets/hub.svg';
 import {
-  FaBars,
-  FaXmark,
   FaHouse,
   FaUsers,
   FaCalendar,
@@ -19,7 +17,7 @@ import {
 export const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const [meetingInfo, setMeetingInfo] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

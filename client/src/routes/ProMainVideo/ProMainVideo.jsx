@@ -127,7 +127,7 @@ export const ProMainVideo = () => {
     const token = searchParams.get('token');
     const fetchDecodedToken = async () => {
       const response = await axios.post(
-        'https://localhost:443/validate-link',
+        'https://localhost:9000/validate-link',
         { token }
       );
       setMeetingInfo(response.data);

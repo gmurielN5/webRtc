@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="32" height="32"><svg id="SvgjsSvg1000" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #404040;
+      }
+
+      .cls-1, .cls-2 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path class="cls-2" d="M27.71,12.71c0,6.43-5.67,17.68-12.31,17.68S3.71,19.15,3.71,12.71,9.08,1.06,15.7,1.06s11.99,5.22,11.99,11.65h.01Z"></path>
+  <circle class="cls-1" cx="15.71" cy="15.73" r="10.01"></circle>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+</style></svg>

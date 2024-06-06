@@ -6,7 +6,7 @@ export const socketConnection = (jwt) => {
   if (socket && socket.connected) {
     return socket;
   } else {
-    socket = io.connect('https://localhost:443', {
+    socket = io.connect('https://localhost:9000', {
       auth: {
         jwt,
       },
