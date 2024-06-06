@@ -33,7 +33,7 @@ app.get('/user-link', (req, res) => {
   meetings.push(userData);
   // encode user data in a jwt token to append it to link- url
   const token = jwt.sign(userData, linkSecret);
-  res.send('https://localhost:5173/join-video?token=' + token);
+  res.send('https://www.mgan.xyz/join-video?token=' + token);
 });
 
 app.post('/validate-link', (req, res) => {
@@ -52,6 +52,6 @@ app.get('/pro-link', (req, res) => {
   };
   const token = jwt.sign(userData, linkSecret);
   res.send(
-    `<a href="https://localhost:5173/dashboard?token=${token}" target="_blank">Link Here</a>`
+    `<a href="https://www.mgan.xyz/dashboard?token=${token}" target="_blank">Link Here</a>`
   );
 });

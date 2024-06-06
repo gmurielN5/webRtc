@@ -6,7 +6,7 @@ export const socketConnection = (jwt) => {
   if (socket && socket.connected) {
     return socket;
   } else {
-    socket = io.connect('https://localhost:9000', {
+    socket = io.connect('https://api.mgan.xyz', {
       auth: {
         jwt,
       },

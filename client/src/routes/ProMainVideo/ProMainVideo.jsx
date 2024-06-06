@@ -127,7 +127,7 @@ export const ProMainVideo = () => {
     const token = searchParams.get('token');
     const fetchDecodedToken = async () => {
       const response = await axios.post(
-        'https://localhost:9000/validate-link',
+        'https://api.mgan.xyz/validate-link',
         { token }
       );
       setMeetingInfo(response.data);
